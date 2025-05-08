@@ -1,0 +1,67 @@
+import tkinter as tk
+from tkinter import messagebox
+
+# --- BMI Calculation ---
+def calculate_bmi():
+    try:
+        height = float(entry_height.get()) / 100  # convert cm to meters
+        weight = float(entry_weight.get())
+
+        if height <= 0 or weight <= 0:
+            raise ValueError
+
+        bmi = weight / (height ** 2)
+        category = get_bmi_category(bmi)
+
+        result_label.config(
+            text=f"Your BMI is {bmi:.2f}\nCategory: {category}",
+            fg="blue"
+        )
+    except ValueError:
+        messagebox.showerror("Invalid input", "Please enter valid positive numbers.")
+
+def get_bmi_category(bmi):
+    if bmi < 18.5:
+        return "Underweight"
+    elif bmi < 24.9:
+        return "Normal weight"
+    elif bmi < 29.9:
+        return "Overweight"
+    else:
+        return "Obese"
+
+# --- GUI Setup ---
+root = tk.Tk()
+root.title("BMI Calculator")
+root.geometry("400x300")
+root.configure(bg="#ccffcc")
+
+# --- Header ---
+header = tk.Label(root, text="💪 BMI Calculator 💪", font=("Helvetica", 18, "bold"), bg="#e6f2ff", fg="#333")
+header.pack(pady=10)
+
+# --- Input Frame ---
+frame = tk.Frame(root, bg="#e6f2ff")
+frame.pack(pady=10)
+
+tk.Label(frame, text="Height (cm):", font=("Arial", 12), bg="#e6f2ff").grid(row=0, column=0, sticky="w")
+entry_height = tk.Entry(frame, font=("Arial", 12), width=20)
+entry_height.grid(row=0, column=1, padx=10, pady=5)
+
+tk.Label(frame, text="Weight (kg):", font=("Arial", 12), bg="#e6f2ff").grid(row=1, column=0, sticky="w")
+entry_weight = tk.Entry(frame, font=("Arial", 12), width=20)
+entry_weight.grid(row=1, column=1, padx=10, pady=5)
+
+# --- Button ---
+calc_button = tk.Button(root, text="Calculate BMI", font=("Arial", 12, "bold"), command=calculate_bmi)
+calc_button.pack(pady=10)
+
+# --- Result Display ---
+result_label = tk.Label(root, text="", font=("Arial", 12), bg="#e6f2ff", justify="center")
+result_label.pack(pady=10)
+
+# --- Footer ---
+footer = tk.Label(root, text="Built with python by Shashank", font=("Arial", 10), bg="#e6f2ff", fg="#555")
+footer.pack(side="bottom", pady=10)
+
+root.mainloop()
